@@ -1,1 +1,100 @@
 
+# Module 01: Analysis with Wireshark & CLI Variants 📡
+
+Welcome to the first module of the **Analysis with Wireshark** repository! This section covers the core concepts of network traffic capture and analysis using **Wireshark (GUI)**, **TShark (CLI)**, and **Termshark (TUI)**, alongside deep dives into interface navigation and filtering techniques.
+
+---
+
+## 🎯 Overview & Requirements
+
+Wireshark is a free and open-source multi-platform network traffic analyzer capable of capturing live data across various interfaces (WiFi, Ethernet, USB, Bluetooth). It provides deep packet inspection for hundreds of protocols and decryption capabilities for protocols like IPsec, SSL/TLS, and WPA/WPA2.
+
+### System Requirements
+* **RAM:** Minimum 500 MB (larger `.pcap` files require more memory).
+* **Disk Space:** 500 MB minimum for installation, plus extra space for capture files.
+* **Display:** 1280 × 1024 resolution recommended.
+
+---
+
+## 💻 Command-Line Traffic Analysis: TShark & Termshark
+
+When working on headless servers without a graphical interface, terminal-based tools are required.
+
+### 1. TShark (Terminal Wireshark)
+TShark shares the core engine, syntax, and options of Wireshark, making it ideal for command-line capture and piping outputs to other tools.
+
+#### Essential TShark Switches
+| Switch | Command / Description | Result |
+| :--- | :--- | :--- |
+| **`-D`** | `tshark -D` | Displays available interfaces and exits. |
+| **`-L`** | `tshark -L` | Lists supported Link-layer mediums (e.g., ethernet). |
+| **`-i`** | `tshark -i eth0` | Specifies the capture interface. |
+| **`-f`** | `tshark -f "host x.x.x.x"` | Applies a capture filter in libpcap (BPF) syntax. |
+| **`-c`** | `tshark -c 100` | Captures a specific number of packets, then stops. |
+| **`-r`** | `tshark -r file.pcap` | Reads from a specified capture file. |
+| **`-w`** | `tshark -w output.pcap` | Writes captured traffic to a file (`pcapng` format). |
+| **`-P`** | `tshark -P` | Prints packet summaries while writing to disk. |
+| **`-x`** | `tshark -x` | Adds Hexadecimal and ASCII representation to the output. |
+
+#### Basic TShark Usage
+```bash
+# Locate TShark binary
+which tshark
+
+# List all capture interfaces
+tshark -D
+
+# Capture traffic on 'eth0' and write to a .pcap file
+sudo tshark -i eth0 -w /tmp/test.pcap
+
+# Apply a BPF capture filter for a specific host
+sudo tshark -i eth0 -f "host 172.16.146.2"
+---
+
+## 🖥️ Wireshark GUI Architecture
+
+Wireshark’s graphical user interface is divided into **three primary panes**:
+
+* **Packet List (Top Pane):** Displays summary lines for each packet.
+  * **Default fields:** Packet Number, Relative Time, Source IP, Destination IP, Protocol, and Payload Info.
+* **Packet Details (Middle Pane):** Dissects the selected packet layer by layer following the OSI model.
+  * ⚠️ **Note:** Encapsulation is listed in reverse order (lower physical layers at the top, application layer at the bottom).
+* **Packet Bytes (Bottom Pane):** Displays raw packet content in **Hexadecimal** and **ASCII** side by side. Highlighting a field in the Details pane highlights its corresponding bytes in this window.
+
+---
+
+## 🔍 Capture Filters vs. Display Filters
+
+Filtering traffic correctly is essential, especially when dealing with large packet captures that can consume heavy CPU and RAM resources.
+
+| Feature | Capture Filters 🛑 | Display Filters 🔍 |
+| :--- | :--- | :--- |
+| **Execution** | Set before capture starts. | Applied during or after capture. |
+| **Syntax** | Berkeley Packet Filter (BPF) syntax. | Wireshark-proprietary syntax. |
+| **Data Impact** | Permanently drops non-matching packets. | Hides non-matching packets without deleting them. |
+
+---
+
+### 🛑 Useful Capture Filters (BPF Syntax)
+
+* `host x.x.x.x` — Captures traffic for a specific host.
+* `net x.x.x.x/24` — Captures traffic for a specific subnet.
+* `src net x.x.x.x/24` — Captures traffic originating from the target network.
+* `port #` — Captures traffic traversing a specific port.
+* `not port #` — Excludes traffic on a specific port.
+* `portrange x-x` — Captures traffic within a specified port range.
+
+---
+
+### 🔍 Useful Display Filters
+
+* `ip.addr == x.x.x.x` — Filters for traffic involving a specific host IP.
+* `ip.src == x.x.x.x` / `ip.dst == x.x.x.x` — Filters by source or destination IP.
+* `dns` / `tcp` / `arp` / `http` — Filters traffic by a specific protocol.
+* `tcp.port == x` — Filters by a specific TCP port.
+* `and` / `or` / `not` — Logical operators to combine multiple conditions.
+
+---
+
+> 💡 **Pro-Tip (Ports vs. Protocols):**
+> Filtering by port (`tcp.port == 80`) isolates all data moving across port 80, regardless of the protocol. Filtering by protocol (`http`) instructs Wireshark to scan packet markers (like `GET`/`POST` requests) regardless of which port is used.
