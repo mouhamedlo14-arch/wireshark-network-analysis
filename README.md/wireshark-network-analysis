@@ -1,1 +1,37 @@
 
+# Analysis with Wireshark 🔍📡
+
+Welcome to the **Analysis with Wireshark** repository! This project serves as a practical, hands-on resource hub and learning guide for mastering network packet analysis, traffic inspection, and protocol troubleshooting using Wireshark.
+
+---
+
+## 🎯 Overview
+
+Wireshark is the industry-standard network protocol analyzer. This repository contains structured modules, analysis workflows, capture files (`.pcap` / `.pcapng`), and display filter cheat sheets designed to help you dissect live network traffic and identify performance bottlenecks or security threats.
+
+---
+
+## 📌 Key Objectives
+
+* **Packet Inspection:** Understand OSI and TCP/IP layer dynamics through deep packet analysis.
+* **Filtering Mastery:** Apply advanced capture and display filters to isolate relevant traffic.
+* **Stream Reconstruction:** Reconstruct network conversations across protocols (TCP, HTTP, DNS, TLS).
+* **Performance Troubleshooting:** Identify latency, packet loss, TCP retransmissions, and window scale issues.
+* **Security Analysis:** Detect network anomalies, port scans, unencrypted credential exposure, and suspicious payloads.
+
+---
+
+## 📂 Repository Structure
+
+* **`01-fundamentals/`** — Getting started with Wireshark, interface setup, and basic display filters.
+* **`02-core-protocols/`** — In-depth inspection of ARP, IP, ICMP, TCP handshakes, DNS, and HTTP/HTTPS.
+* **`03-network-troubleshooting/`** — Real-world scenarios on diagnosing network lag, dropped packets, and bad performance.
+* **`04-security-and-forensics/`** — Analyzing malware C2 communications, spoofing attacks, and rogue traffic.
+* **`pcaps/`** — Sample packet capture files used for hands-on exercises.
+
+---
+
+## 🛠️ Prerequisites
+
+* Basic understanding of networking fundamentals (TCP/IP model, IP addressing, ports, and protocols).
+* Wireshark installed on your machine ([Download Wireshark](https://www.wireshark.org/download.html)).
